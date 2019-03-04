@@ -561,7 +561,7 @@
                                     <server_zip>target/janusgraph-${project.version}-hadoop2.zip</server_zip>
                                 </buildArgs>
                                 <forceTags>true</forceTags>
-                                <imageName>janusgraph/server</imageName>
+                                <imageName>janusgraph-server</imageName>                                
                                 <imageTags>
                                     <imageTag>${project.version}</imageTag>
                                 </imageTags>
@@ -624,6 +624,11 @@
                                         <formats>
                                             <format>zip</format>
                                         </formats>
+                                        <archiverConfig>
+                   							 <directoryMode>0755</directoryMode>
+                  							 <defaultDirectoryMode>0755</defaultDirectoryMode>
+                   							 <fileMode>0755</fileMode>
+                						</archiverConfig>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -896,7 +901,7 @@
 
                         Bug: http://jira.codehaus.org/browse/MRESOURCES-132
                     -->
-                    <plugin>
+                    <!-- <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <inherited>false</inherited>
@@ -918,7 +923,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin> -->
 
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>

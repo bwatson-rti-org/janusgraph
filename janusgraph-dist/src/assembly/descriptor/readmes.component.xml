@@ -18,5 +18,13 @@
             <source>${assembly.txtfile.dir}/docs/upgrade.adoc</source>
             <outputDirectory>/</outputDirectory>
         </file>
+        <file>
+            <source>${assembly.txtfile.dir}/janusgraph-dist/janusgraph-dist-hadoop-2/docker-compose.yml</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+        <file>
+            <source>${assembly.txtfile.dir}/janusgraph-dist/janusgraph-dist-hadoop-2/Dockerfile</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
     </files>
 </component>

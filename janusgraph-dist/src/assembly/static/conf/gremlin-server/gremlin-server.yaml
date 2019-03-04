@@ -1,17 +1,23 @@
-host: 0.0.0.0
+host: 10.160.2.20
 port: 8182
-scriptEvaluationTimeout: 30000
-channelizer: org.apache.tinkerpop.gremlin.server.channel.WebSocketChannelizer
+scriptEvaluationTimeout: 1800000
+#channelizer: org.apache.tinkerpop.gremlin.server.channel.WebSocketChannelizer
+channelizer: org.apache.tinkerpop.gremlin.server.channel.WsAndHttpChannelizer
 graphs: {
-  graph: conf/gremlin-server/janusgraph-cql-es-server.properties
-}
+  graph: conf/gremlin-server/janusgraph-cql-es-server.properties}
 scriptEngines: {
   gremlin-groovy: {
-    plugins: { org.janusgraph.graphdb.tinkerpop.plugin.JanusGraphGremlinPlugin: {},
+    config: {
+      compilerCustomizerProviders: {
+        "org.apache.tinkerpop.gremlin.groovy.jsr223.customizer.ThreadInterruptCustomizerProvider":[],
+        "org.apache.tinkerpop.gremlin.groovy.jsr223.customizer.TimedInterruptCustomizerProvider":[10000],
+        "org.apache.tinkerpop.gremlin.groovy.jsr223.customizer.CompileStaticCustomizerProvider":["org.apache.tinkerpop.gremlin.groovy.jsr223.customizer.SimpleSandboxExtension"],
+          plugins: { 
+               org.janusgraph.graphdb.tinkerpop.plugin.JanusGraphGremlinPlugin: {},
                org.apache.tinkerpop.gremlin.server.jsr223.GremlinServerGremlinPlugin: {},
                org.apache.tinkerpop.gremlin.tinkergraph.jsr223.TinkerGraphGremlinPlugin: {},
                org.apache.tinkerpop.gremlin.jsr223.ImportGremlinPlugin: {classImports: [java.lang.Math], methodImports: [java.lang.Math#*]},
-               org.apache.tinkerpop.gremlin.jsr223.ScriptFileGremlinPlugin: {files: [scripts/empty-sample.groovy]}}}}
+               org.apache.tinkerpop.gremlin.jsr223.ScriptFileGremlinPlugin: {files: [scripts/empty-sample.groovy]}}}}}}
 serializers:
   - { className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0, config: { ioRegistries: [org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry] }}
   - { className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0, config: { serializeResultToString: true }}
@@ -41,4 +47,16 @@ maxAccumulationBufferComponents: 1024
 resultIterationBatchSize: 64
 writeBufferLowWaterMark: 32768
 writeBufferHighWaterMark: 65536
-
+#sssl: {
+#enabled: true}
+authentication: {
+  authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
+  authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,
+  config: {
+       defaultUsername: admin,
+       defaultPassword: 1234,
+       hmacSecret: secret,
+       tokenTimeout: 7200000,
+       credentialsDb:  conf/janusgraph-credentials-server.properties
+  }
+}

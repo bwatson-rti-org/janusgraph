@@ -242,7 +242,7 @@ seed_provider:
       parameters:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
-          - seeds: "127.0.0.1"
+          - seeds: "localhost"
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
@@ -556,7 +556,10 @@ cross_node_timeout: false
 #
 # You can use a custom Snitch by setting this to the full class name
 # of the snitch, which will be assumed to be on your classpath.
-endpoint_snitch: SimpleSnitch
+#endpoint_snitch: SimpleSnitch
+
+#endpoint_snitch: org.apache.cassandra.locator.GossipingPropertyFileSnitch
+endpoint_snitch: org.apache.cassandra.locator.SimpleSnitch
 
 # controls how often to perform the more expensive part of host score
 # calculation

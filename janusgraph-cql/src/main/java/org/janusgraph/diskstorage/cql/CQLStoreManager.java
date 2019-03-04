@@ -237,6 +237,8 @@ public class CQLStoreManager extends DistributedStoreManager implements KeyColum
 
         if (configuration.get(PROTOCOL_VERSION) != 0) {
             builder.withProtocolVersion(ProtocolVersion.fromInt(configuration.get(PROTOCOL_VERSION)));
+        }else {
+        	builder.withProtocolVersion(ProtocolVersion.V3);
         }
 
         if (configuration.has(AUTH_USERNAME) && configuration.has(AUTH_PASSWORD)) {

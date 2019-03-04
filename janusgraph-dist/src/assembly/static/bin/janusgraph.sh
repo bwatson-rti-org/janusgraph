@@ -129,7 +129,7 @@ wait_for_shutdown() {
 }
 
 start() {
-    status_class $CASSANDRA_FRIENDLY_NAME $CASSANDRA_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
+    #status_class $CASSANDRA_FRIENDLY_NAME $CASSANDRA_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
     echo "Forking Cassandra..."
     if [ -n "$VERBOSE" ]; then
         CASSANDRA_INCLUDE="$BIN"/cassandra.in.sh "$BIN"/cassandra || exit 1
@@ -141,7 +141,7 @@ start() {
         return 1
     }
 
-    status_class $ES_FRIENDLY_NAME $ES_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
+    #status_class $ES_FRIENDLY_NAME $ES_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
     echo "Forking Elasticsearch..."
     if [ -n "$VERBOSE" ]; then
         "$BIN"/../elasticsearch/bin/elasticsearch -d
@@ -153,7 +153,7 @@ start() {
         return 1
     }
 
-    status_class $GREMLIN_FRIENDLY_NAME $GREMLIN_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
+    #status_class $GREMLIN_FRIENDLY_NAME $GREMLIN_CLASS_NAME >/dev/null && status && echo "Stop services before starting" && exit 1
     echo "Forking Gremlin-Server..."
     if [ -n "$VERBOSE" ]; then
         "$BIN"/gremlin-server.sh conf/gremlin-server/gremlin-server.yaml &
@@ -163,10 +163,12 @@ start() {
     wait_for_startup 'Gremlin-Server' $GSRV_IP $GSRV_PORT $GSRV_STARTUP_TIMEOUT_S || {
         echo "See $BIN/../log/gremlin-server.log for Gremlin-Server log output."  >&2
         return 1
-    }
-    disown
-
-    echo "Run gremlin.sh to connect." >&2
+    }     
+    wait
+    #disown
+	
+    #echo "Run gremlin.sh to connect." >&2    
+    
 }
 
 stop() {
@@ -267,6 +269,8 @@ while [ 1 ]; do
         break
     fi
 done
+
+#exec "$@"
 
 if [ -n "$COMMAND" ]; then
     $COMMAND

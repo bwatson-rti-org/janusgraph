@@ -20,7 +20,7 @@ jobs:
 
 - job: CreateImage
   displayName: Create required image
-  condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
+  condition: and(succeeded(), eq(variables['Azure.CreateImage'], 'true'))
 
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -33,7 +33,7 @@ jobs:
 - job: BuildImage
   displayName: Build
   dependsOn: CreateImage
-  condition: and(succeeded(), eq(variables['Azure.CreateResources'], 'true'))
+  condition: and(succeeded(), eq(variables['Azure.CreateImage'], 'true'))
 
   pool:
     vmImage: 'Ubuntu-16.04'

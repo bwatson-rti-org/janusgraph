@@ -1,3 +1,12 @@
-hosts: [localhost]
+hosts: [10.160.2.20]
 port: 8182
-serializer: { className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0, config: { serializeResultToString: true }}
+username: admin
+password: 1234
+protocol: ldap
+connectionPool: { enableSsl: true,
+                  maxContentLength: 65536000}
+serializer: { className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV1d0, config: { serializeResultToString: true }}
+
+#hosts: [localhost]
+#port: 8182
+#serializer: { className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0, config: { serializeResultToString: true }}

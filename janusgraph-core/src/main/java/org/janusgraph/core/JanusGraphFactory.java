@@ -292,7 +292,7 @@ public class JanusGraphFactory {
 
     private static ReadConfiguration getLocalConfiguration(String shortcutOrFile) {
         File file = new File(shortcutOrFile);
-        if (file.exists()) return getLocalConfiguration(file);
+        if (file.exists()) return getLocalConfiguration(file);       
         else {
             int pos = shortcutOrFile.indexOf(':');
             if (pos<0) pos = shortcutOrFile.length();

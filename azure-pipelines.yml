@@ -7,7 +7,10 @@ trigger:
 - master
 
 variables:
-  imageName: 'janusgraph-server:latest'
+  imageName: 'janusgraph-server'
+  dockerId: 'bernard'
+  pswd: 'Rl7lUX8K79cISRw/jknXgURvXR7UOGbK'
+  tagName: 'latest'
 
 resources:
   containers:
@@ -20,20 +23,23 @@ jobs:
 
 - job: CreateImage
   displayName: Create required image
-  condition: and(succeeded(), eq(variables['Azure.CreateImage'], 'true'))
+  continueOnError: false
 
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - script: docker build -f Dockerfile -t $(imageName) .
-    displayName: 'docker build'
-    #continueOnError: false
+  - script: | 
+       docker build -t $(dockerId).azurecr.io/$(imageName) https://github.com/bwatson-rti-org/janusgraph.git#:janusgraph-dist/janusgraph-dist-hadoop-2
+       docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
+       #docker tag  $(imageName) $(dockerId).azurecr.io/$(imageName):$(Build.BuildId)
+       docker push $(dockerId).azurecr.io/$(imageName)
+    continueOnError: false    
 
 - job: BuildImage
   displayName: Build
   dependsOn: CreateImage
-  condition: and(succeeded(), eq(variables['Azure.CreateImage'], 'true'))
+  continueOnError: false
 
   pool:
     vmImage: 'Ubuntu-16.04'

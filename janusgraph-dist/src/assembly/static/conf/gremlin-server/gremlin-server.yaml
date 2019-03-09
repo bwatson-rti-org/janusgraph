@@ -1,4 +1,4 @@
-host: 10.160.2.20
+host: 0.0.0.0
 port: 8182
 scriptEvaluationTimeout: 1800000
 #channelizer: org.apache.tinkerpop.gremlin.server.channel.WebSocketChannelizer

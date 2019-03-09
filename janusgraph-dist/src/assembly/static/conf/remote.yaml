@@ -1,4 +1,4 @@
-hosts: [10.160.2.20]
+hosts: [localhost]
 port: 8182
 username: admin
 password: 1234

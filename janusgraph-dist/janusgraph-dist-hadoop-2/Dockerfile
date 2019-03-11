@@ -24,6 +24,7 @@ WORKDIR /var/janusgraph
 
 ENTRYPOINT ["./bin/janusgraph.sh", "-v", "start"]
 
+
 VOLUME ["/var/janusgraph-dist-hadoop-2/data"] 
 
 USER janus

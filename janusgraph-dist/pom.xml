@@ -19,7 +19,7 @@
         <assembly.cfilter.in.dir>${project.basedir}/src/assembly/cfilter</assembly.cfilter.in.dir>
         <assembly.cfilter.out.dir>${project.build.directory}/cfilter</assembly.cfilter.out.dir>
         <assembly.descriptor.dir>${project.basedir}/src/assembly/descriptor</assembly.descriptor.dir>
-        <assembly.es.dir>${project.build.directory}/elasticsearch-${elasticsearch.version}</assembly.es.dir>
+        <assembly.es.dir>${project.build.directory}/elasticsearch-${elasticsearch.version}</assembly.es.dir>        
 
         <!-- Variables for integration testing on release-candidate archive files -->
         <test.expect.dir>${project.build.directory}/test-classes</test.expect.dir>
@@ -537,6 +537,9 @@
                                         <fileset>
                                             <directory>${pkgtools.dir}/redhat/</directory>
                                         </fileset>
+                                        <fileset>
+                                            <directory>${project.basedir}/janusgraph-dist-hadoop-2/unzip</directory>
+                                        </fileset>
                                     </filesets>
                                 </configuration>
                             </execution>
@@ -558,7 +561,9 @@
                             <configuration>
                                 <dockerDirectory>${project.basedir}/janusgraph-dist-hadoop-2</dockerDirectory>
                                 <buildArgs>
-                                    <server_zip>target/janusgraph-${project.version}-hadoop2.zip</server_zip>
+<!--                                     <server_zip>target/janusgraph-${project.version}-hadoop2.zip</server_zip> -->
+										<server_unzip>unzip</server_unzip>
+										<file_part>janusgraph-${project.version}-hadoop2</file_part>
                                 </buildArgs>
                                 <forceTags>true</forceTags>
                                 <imageName>janusgraph-server</imageName>                                
@@ -632,7 +637,7 @@
                                     </configuration>
                                 </execution>
                             </executions>
-                        </plugin>
+                        </plugin>                        
 
                         <plugin>
                             <artifactId>maven-gpg-plugin</artifactId>
@@ -959,6 +964,48 @@
                     <plugin>
                         <artifactId>maven-gpg-plugin</artifactId>
                     </plugin>
+                    
+                      <plugin>
+					      <artifactId>maven-antrun-plugin</artifactId>
+					      <version>1.8</version>
+					      <executions>
+					         <execution>
+					         	<id>test</id>
+					            <phase>package</phase>
+					            <configuration>
+					            	<target>	
+					            					               
+					                  <echo message="unzipping file" />
+					                  <unzip src="C:/Users/bwatson/git/janusgraph/janusgraph-dist/janusgraph-dist-hadoop-2/target/janusgraph-${project.version}-hadoop2.zip" dest="${project.basedir}/janusgraph-dist-hadoop-2/unzip" />
+					              </target>
+					            </configuration>
+					            <goals>
+					               <goal>run</goal>
+					            </goals>
+					         </execution>
+					      </executions>
+					   </plugin>
+					   
+<!-- 					     <plugin> -->
+<!-- 						    <artifactId>maven-clean-plugin</artifactId> -->
+<!-- 						    <version>3.1.0</version> -->
+<!-- 						    <configuration> -->
+<!-- 						      <filesets> -->
+<!-- 						        <fileset> -->
+<!-- 						          <directory>some/relative/path</directory> -->
+<!-- 						          <includes> -->
+<!-- 						            <include>**/*.tmp</include> -->
+<!-- 						            <include>**/*.log</include> -->
+<!-- 						          </includes> -->
+<!-- 						          <excludes> -->
+<!-- 						            <exclude>**/important.log</exclude> -->
+<!-- 						            <exclude>**/another-important.log</exclude> -->
+<!-- 						          </excludes> -->
+<!-- 						          <followSymlinks>false</followSymlinks> -->
+<!-- 						        </fileset> -->
+<!-- 						      </filesets> -->
+<!-- 						    </configuration> -->
+<!-- 						  </plugin> -->
                 </plugins>
             </build>
         </profile>

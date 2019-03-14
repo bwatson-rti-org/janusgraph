@@ -3,14 +3,14 @@ FROM openjdk:8
 #RUN mkdir /var/janusgraph
 
 ARG server_unzip
+#ARG file_part
 ADD ${server_unzip} /var
 ADD ./jmxremote.password /etc/cassandra/jmxremote.password
 ADD ./jmxremote.password /etc/java-8-openjdk/management/jmxremote.password
 
 RUN apt-get update && apt-get install -y curl && \
-	apt-get update -y && apt-get install -y zip && \
-	server_base=`basename ${server_unzip} && \
-#	unzip -q /var/${server_base}.zip -d /var && \
+	apt-get update -y && \
+	server_base="janusgraph-0.3.2-SNAPSHOT-hadoop2" && \	
 	ln -s /var/${server_base} /var/janusgraph && \
 	chmod -R 777 /var/${server_base}/bin && chmod -R 777 /var/${server_base}/elasticsearch && \
 	chmod -R 777 /var/${server_base}/conf/cassandra && chmod -R 777 /var/${server_base}/elasticsearch/bin && \

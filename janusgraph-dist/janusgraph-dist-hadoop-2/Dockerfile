@@ -1,14 +1,18 @@
 FROM openjdk:8
 
-ARG server_zip
-ADD ${server_zip} /var
+#RUN mkdir /var/janusgraph
+
+ARG server_unzip
+ARG file_part
+ADD ${server_unzip} /var
 ADD ./jmxremote.password /etc/cassandra/jmxremote.password
 ADD ./jmxremote.password /etc/java-8-openjdk/management/jmxremote.password
 
+RUN mkdir -p /var/${file_part}/elasticsearch/plugins
+
 RUN apt-get update && apt-get install -y curl && \
-	apt-get update -y && apt-get install -y zip && \
-	server_base=`basename ${server_zip} .zip` && \
-	unzip -q /var/${server_base}.zip -d /var && \
+	apt-get update -y && \
+	server_base=${file_part} && \	
 	ln -s /var/${server_base} /var/janusgraph && \
 	chmod -R 777 /var/${server_base}/bin && chmod -R 777 /var/${server_base}/elasticsearch && \
 	chmod -R 777 /var/${server_base}/conf/cassandra && chmod -R 777 /var/${server_base}/elasticsearch/bin && \
@@ -23,7 +27,6 @@ RUN apt-get update && apt-get install -y curl && \
 WORKDIR /var/janusgraph
 
 ENTRYPOINT ["./bin/janusgraph.sh", "-v", "start"]
-
 
 VOLUME ["/var/janusgraph-dist-hadoop-2/data"] 
 

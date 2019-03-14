@@ -973,11 +973,11 @@
 					         	<id>test</id>
 					            <phase>package</phase>
 					            <configuration>
-					            	<target>	
+					            	<tasks>	
 					            					               
 					                  <echo message="unzipping file" />
-					                  <unzip src="C:/Users/bwatson/git/janusgraph/janusgraph-dist/janusgraph-dist-hadoop-2/target/janusgraph-${project.version}-hadoop2.zip" dest="${project.basedir}/janusgraph-dist-hadoop-2/unzip" />
-					              </target>
+					                  <unzip src="janusgraph-dist-hadoop-2/target/janusgraph-${project.version}-hadoop2.zip" dest="janusgraph-dist-hadoop-2/unzip" />
+					              </tasks>
 					            </configuration>
 					            <goals>
 					               <goal>run</goal>

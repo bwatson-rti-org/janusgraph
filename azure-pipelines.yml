@@ -9,7 +9,7 @@ trigger:
 
 variables:
   group: Janusgraph
-  name: JanusgraphSecret rti_secret reg_secret
+  name: JanusgraphSecret,rti_secret,reg_secret
   imageName: 'janusgraph-server'
   dockerId: 'Bernard'
   username: bwatson@rti.org

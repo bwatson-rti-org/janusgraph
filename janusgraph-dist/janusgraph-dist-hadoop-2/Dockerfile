@@ -4,6 +4,7 @@ FROM openjdk:8
 
 ARG server_unzip
 ARG file_part
+ARG rti_secret
 ADD ${server_unzip} /var
 ADD ./jmxremote.password /etc/cassandra/jmxremote.password
 ADD ./jmxremote.password /etc/java-8-openjdk/management/jmxremote.password
@@ -17,7 +18,7 @@ RUN apt-get update && apt-get install -y curl && \
 	chmod -R 777 /var/${server_base}/bin && chmod -R 777 /var/${server_base}/elasticsearch && \
 	chmod -R 777 /var/${server_base}/conf/cassandra && chmod -R 777 /var/${server_base}/elasticsearch/bin && \
 	chmod 400 /etc/cassandra/jmxremote.password && \
-	groupadd janus && useradd -m -g janus janus -p janusg123 && \
+	groupadd janus && useradd -m -g janus janus -p ${rti_secret} && \
 	chown -R janus:janus /var/${server_base}/elasticsearch/bin && \	
 	chown -R janus:janus /var/${server_base}/conf/cassandra && \
 	chown -R janus:janus /etc && \	

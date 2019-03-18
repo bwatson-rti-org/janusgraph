@@ -1,3 +1,4 @@
+
 # Docker image
 # Build a Docker image to deploy, run, or push to a container registry.
 # Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
@@ -7,8 +8,11 @@ trigger:
 - master
 
 variables:
+  group: Janusgraph
+  name: JanusgraphSecret rti_secret reg_secret
   imageName: 'janusgraph-server'
-  dockerId: 'bernard'
+  dockerId: 'Bernard'
+  username: bwatson@rti.org
   pswd: 'Rl7lUX8K79cISRw/jknXgURvXR7UOGbK'
   tagName: 'latest'
 
@@ -21,8 +25,8 @@ resources:
 
 jobs:
 
-- job: CreateImage
-  displayName: Create required image
+- job: CreateAndRegisterImage
+  displayName: Create image and push it to registry
   continueOnError: false
 
   pool:
@@ -30,21 +34,20 @@ jobs:
 
   steps:
   - script: | 
-       docker build -t $(dockerId).azurecr.io/$(imageName) https://github.com/bwatson-rti-org/janusgraph.git#:janusgraph-dist/janusgraph-dist-hadoop-2
-       docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
-       #docker tag  $(imageName) $(dockerId).azurecr.io/$(imageName):$(Build.BuildId)
-       docker push $(dockerId).azurecr.io/$(imageName)
-    continueOnError: false    
+       docker build --build-arg server_unzip=unzip --build-arg file_part=janusgraph-0.3.2-SNAPSHOT-hadoop2 --build-arg rti_secret=$(rti_secret) -t $(dockerId).azurecr.io/$(imageName) https://github.com/bwatson-rti-org/janusgraph.git#:janusgraph-dist/janusgraph-dist-hadoop-2
+       docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io           
+       docker push $(dockerId).azurecr.io/$(imageName)        
 
-- job: BuildImage
-  displayName: Build
-  dependsOn: CreateImage
+- job: DeployAndStartContainer
+  displayName: Deploy and start container
+  dependsOn: CreateAndRegisterImage
   continueOnError: false
 
   pool:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  - script: docker exec -i -t janusgraph /var/janusgraph/bin/janusgraph.sh
-    displayName: 'Execute script'
-    continueOnError: false
+  - script: |
+        az login -u $(username) -p $(JanusgraphSecret)       
+        az container create -g MSA-Catapult-East-Dev -n janusgraph-server --image bernard.azurecr.io/janusgraph-server:latest --command-line "/var/janusgraph/bin/janusgraph.sh -v start" --location eastus --dns-name-label janusgraph --registry-login-server bernard.azurecr.io --os-type Linux --cpu 1 --restart-policy Never --ip-address public --ports 80 8182 --protocol TCP --memory 2 --registry-username Bernard --registry-password ${reg_secret}
+    

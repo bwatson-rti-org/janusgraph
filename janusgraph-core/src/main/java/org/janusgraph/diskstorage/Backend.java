@@ -57,6 +57,7 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
@@ -465,7 +466,17 @@ public class Backend implements LockerProvider, AutoCloseable {
             Preconditions.checkNotNull(provider);
             builder.put(index, provider);
         }
+        displayHost();
         return builder.build();
+    }
+    
+    private void displayHost() {
+    	try {
+    		InetAddress address = InetAddress.getLocalHost();
+    		log.info("THE LOCALHOST IS "+address.getHostName()+" AND THE IP ADDRESS IS "+address.getHostAddress());
+    	}catch(Exception | Error e) {
+    		log.error("An error occurred getting the ip address", e);
+    	}
     }
 
     public static <T> T getImplementationClass(Configuration config, String className, Map<String, String> registeredImplementations) {

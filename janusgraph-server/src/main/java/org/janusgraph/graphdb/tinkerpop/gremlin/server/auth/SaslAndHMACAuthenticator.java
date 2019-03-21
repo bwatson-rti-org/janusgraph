@@ -16,10 +16,6 @@ package org.janusgraph.graphdb.tinkerpop.gremlin.server.auth;
 
 import org.apache.tinkerpop.gremlin.server.auth.AuthenticatedUser;
 import org.apache.tinkerpop.gremlin.server.auth.AuthenticationException;
-import org.janusgraph.diskstorage.cql.CQLStoreManager;
-import org.janusgraph.diskstorage.cql.Logger;
-import import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.util.Map;
@@ -30,7 +26,6 @@ import java.util.Map;
  * @author Keith Lohnes lohnesk@gmail.com
  */
 public class SaslAndHMACAuthenticator extends JanusGraphAbstractAuthenticator {
-	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(SaslAndHMACAuthenticator.class);
 
     private static final String ILLEGAL_STATE_MESSAGE =
         "This exception is likely due to a misconfiguration. Try using the SaslAndHMACAuthenticationHandler as the " +
@@ -58,16 +53,6 @@ public class SaslAndHMACAuthenticator extends JanusGraphAbstractAuthenticator {
         this.janusSimpleAuthenticator.simpleAuthenticator = this.janusSimpleAuthenticator.createSimpleAuthenticator();
         this.janusSimpleAuthenticator.simpleAuthenticator.setup(config);
         this.hmacAuthenticator.setup(config);
-        displayHost();
-    }
-    
-    private void displayHost() {
-    	try {
-    		InetAddress address = InetAddress.getLocalHost();
-    		LOGGER.info("THE LOCALHOST IS "+address.getHostName()+" AND THE IP ADDRESS IS "+address.getHostAddress());
-    	}catch(Exception | Error e) {
-    		LOGGER.error("An error occurred getting the ip address", e);
-    	}
     }
 
     @Override

@@ -458,6 +458,7 @@ public class Backend implements LockerProvider, AutoCloseable {
 
     private static Map<String, IndexProvider> getIndexes(Configuration config) {
         ImmutableMap.Builder<String, IndexProvider> builder = ImmutableMap.builder();
+        displayHost();
         for (String index : config.getContainedNamespaces(INDEX_NS)) {
             Preconditions.checkArgument(StringUtils.isNotBlank(index), "Invalid index name [%s]", index);
             log.info("Configuring index [{}]", index);
@@ -465,8 +466,7 @@ public class Backend implements LockerProvider, AutoCloseable {
                     StandardIndexProvider.getAllProviderClasses());
             Preconditions.checkNotNull(provider);
             builder.put(index, provider);
-        }
-        displayHost();
+        }        
         return builder.build();
     }
     

@@ -458,8 +458,7 @@ public class Backend implements LockerProvider, AutoCloseable {
 
     private static Map<String, IndexProvider> getIndexes(Configuration config) {
         ImmutableMap.Builder<String, IndexProvider> builder = ImmutableMap.builder();
-        log.info("GETTING IP INFORMATION!!");
-        displayHost();
+        log.info("GETTING IP INFORMATION {}", displayHost());
         for (String index : config.getContainedNamespaces(INDEX_NS)) {
             Preconditions.checkArgument(StringUtils.isNotBlank(index), "Invalid index name [%s]", index);
             log.info("Configuring index [{}]", index);
@@ -471,12 +470,14 @@ public class Backend implements LockerProvider, AutoCloseable {
         return builder.build();
     }
     
-    private void displayHost() {
+    private static String displayHost() {
+    	String value = null;
     	try {    		
-    		log.info("THE LOCALHOST IS "+NetworkUtil.getLocalHostName()+" AND THE IP ADDRESS IS "+NetworkUtil.getLocalAddress());
+    		value = NetworkUtil.getLocalHostName()+" "+NetworkUtil.getLocalAddress();
     	}catch(Exception | Error e) {
     		log.error("An error occurred getting the ip address", e);
     	}
+    	return value;
     }
 
     public static <T> T getImplementationClass(Configuration config, String className, Map<String, String> registeredImplementations) {

@@ -48,7 +48,7 @@ import org.janusgraph.diskstorage.util.time.TimestampProvider;
 import org.janusgraph.graphdb.configuration.GraphDatabaseConfiguration;
 import org.janusgraph.graphdb.transaction.TransactionConfiguration;
 import org.janusgraph.util.system.ConfigurationUtil;
-
+import org.janusgraph.util.system.NetworkUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -458,6 +458,7 @@ public class Backend implements LockerProvider, AutoCloseable {
 
     private static Map<String, IndexProvider> getIndexes(Configuration config) {
         ImmutableMap.Builder<String, IndexProvider> builder = ImmutableMap.builder();
+        log.info("GETTING IP INFORMATION!!");
         displayHost();
         for (String index : config.getContainedNamespaces(INDEX_NS)) {
             Preconditions.checkArgument(StringUtils.isNotBlank(index), "Invalid index name [%s]", index);
@@ -471,9 +472,8 @@ public class Backend implements LockerProvider, AutoCloseable {
     }
     
     private void displayHost() {
-    	try {
-    		InetAddress address = InetAddress.getLocalHost();
-    		log.info("THE LOCALHOST IS "+address.getHostName()+" AND THE IP ADDRESS IS "+address.getHostAddress());
+    	try {    		
+    		log.info("THE LOCALHOST IS "+NetworkUtil.getLocalHostName()+" AND THE IP ADDRESS IS "+NetworkUtil.getLocalAddress());
     	}catch(Exception | Error e) {
     		log.error("An error occurred getting the ip address", e);
     	}

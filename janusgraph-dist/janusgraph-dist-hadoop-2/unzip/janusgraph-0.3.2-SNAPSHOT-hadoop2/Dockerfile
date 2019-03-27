@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y curl && \
 	
 WORKDIR /var/janusgraph
 
+
 ENTRYPOINT ["./bin/janusgraph.sh", "-v", "start"]
 
 VOLUME ["/var/janusgraph-dist-hadoop-2/data"] 

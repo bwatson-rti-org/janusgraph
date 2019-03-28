@@ -50,5 +50,5 @@ jobs:
         az login -u $(username) -p $(JanusgraphSecret)       
         az container create -g MSA-Catapult-East-Dev -n janusgraph-server --image bernard.azurecr.io/janusgraph-server:latest --command-line "tail -f /dev/null" --location eastus --dns-name-label janusgraph --registry-login-server bernard.azurecr.io --os-type Linux --cpu 1 --restart-policy Never --ip-address public --ports 80 8182 --protocol TCP --memory 2 --registry-username Bernard --registry-password $(reg_secret)
         az container exec -g MSA-Catapult-East-Dev --name janusgraph-server --container-name janusgraph-server --exec-command "/bin/bash"
-        /var/janusgraph/bin/janusgraph.sh -v start
+        var/janusgraph/bin/janusgraph.sh -v start
     

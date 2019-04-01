@@ -48,6 +48,6 @@ jobs:
   - script: |
         Write Host "Value of rti_secret is $(rti_secret)"
         az login -u $(username) -p $(JanusgraphSecret)       
-        az container create -g MSA-Catapult-East-Dev -n janusgraph-server --image bernard.azurecr.io/janusgraph-server:latest --command-line "/var/janusgraph/bin/janusgraph.sh -v start ping -t localhost" --location eastus --dns-name-label janusgraph --registry-login-server bernard.azurecr.io --os-type Linux --cpu 6 --restart-policy Never --ip-address public --ports 80 8182 --protocol TCP --memory 2 --registry-username Bernard --registry-password $(reg_secret)
+        az container create -g MSA-Catapult-East-Dev -n janusgraph-server --image bernard.azurecr.io/janusgraph-server:latest --command-line "/var/janusgraph/bin/janusgraph.sh -v start ping -t localhost" --location eastus --dns-name-label janusgraph --registry-login-server bernard.azurecr.io --os-type Linux --cpu 4 --restart-policy Never --ip-address public --ports 80 8182 --protocol TCP --memory 2 --registry-username Bernard --registry-password $(reg_secret)
             
     

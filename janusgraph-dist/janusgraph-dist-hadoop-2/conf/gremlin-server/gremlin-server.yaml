@@ -56,8 +56,8 @@ authentication: {
   authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
   authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,
   config: {
-       defaultUsername: catapult,
-       defaultPassword: password4Catapult,
+       defaultUsername: admin,
+       defaultPassword: 1234,
        hmacSecret: secret,
        tokenTimeout: 7200000,
        credentialsDb:  conf/janusgraph-credentials-server.properties

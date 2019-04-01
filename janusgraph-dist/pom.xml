@@ -977,7 +977,7 @@
 					            	<tasks>	
 					            					               
 					                  <echo message="unzipping file" />
-					                  <unzip src="janusgraph-dist-hadoop-2/target/janusgraph-${project.version}-hadoop2.zip" dest="janusgraph-dist-hadoop-2/unzip" />
+					                  <unzip src="C:/Users/bwatson/git/janusgraph/janusgraph-dist/janusgraph-dist-hadoop-2/target/janusgraph-${project.version}-hadoop2.zip" dest="C:/Users/bwatson/git/janusgraph/janusgraph-dist/janusgraph-dist-hadoop-2/unzip" />
 					              </tasks>
 					            </configuration>
 					            <goals>

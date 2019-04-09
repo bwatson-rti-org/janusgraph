@@ -50,8 +50,12 @@ maxAccumulationBufferComponents: 1024
 resultIterationBatchSize: 64
 writeBufferLowWaterMark: 32768
 writeBufferHighWaterMark: 65536
-#sssl: {
-#enabled: true}
+ssl: {
+  enabled: true
+#  sslEnabledProtocols: [TLSv1.2],
+#  keyStore: rti.org.jks,
+#  keyStorePassword:
+}
 authentication: {
   authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
   authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,

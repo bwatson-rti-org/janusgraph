@@ -1,13 +1,14 @@
 FROM openjdk:8
 
-#RUN mkdir /var/janusgraph
-
 ARG server_unzip
 ARG file_part
 ARG rti_secret
 ADD ${server_unzip} /var
 ADD ./jmxremote.password /etc/cassandra/jmxremote.password
 ADD ./jmxremote.password /etc/java-8-openjdk/management/jmxremote.password
+ADD ./server.pk8 /usr/lib/jvm/java-8-openjdk-amd64
+ADD ./server.crt /usr/lib/jvm/java-8-openjdk-amd64
+ADD ./server-trusted.crt /usr/lib/jvm/java-8-openjdk-amd64
 
 RUN mkdir -p /var/${file_part}/elasticsearch/plugins
 
@@ -24,6 +25,7 @@ RUN apt-get update && apt-get install -y curl && \
 	chown -R janus:janus /etc && \	
 	chown janus:janus /etc/cassandra/jmxremote.password && \
 	chown -R janus:janus /var
+	
 	
 WORKDIR /var/janusgraph
 

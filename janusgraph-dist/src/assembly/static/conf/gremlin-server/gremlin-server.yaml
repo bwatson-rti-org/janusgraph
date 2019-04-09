@@ -1,12 +1,15 @@
 host: 0.0.0.0
 port: 8182
 scriptEvaluationTimeout: 1800000
-#channelizer: org.apache.tinkerpop.gremlin.server.channel.WebSocketChannelizer
-channelizer: org.apache.tinkerpop.gremlin.server.channel.WsAndHttpChannelizer
+channelizer: org.apache.tinkerpop.gremlin.server.channel.WebSocketChannelizer
+#channelizer: org.apache.tinkerpop.gremlin.server.channel.WsAndHttpChannelizer
 graphs: {
   graph: conf/gremlin-server/janusgraph-cql-es-server.properties}
 scriptEngines: {
   gremlin-groovy: {
+    imports: [java.lang.Math],
+    staticImports: [java.lang.Math.PI],
+    scripts: [scripts/empty-sample.groovy],
     config: {
       compilerCustomizerProviders: {
         "org.apache.tinkerpop.gremlin.groovy.jsr223.customizer.ThreadInterruptCustomizerProvider":[],
@@ -39,24 +42,23 @@ metrics: {
   slf4jReporter: {enabled: true, interval: 180000},
   gangliaReporter: {enabled: false, interval: 180000, addressingMode: MULTICAST},
   graphiteReporter: {enabled: false, interval: 180000}}
+strictTransactionManagement: false
 maxInitialLineLength: 4096
 maxHeaderSize: 8192
 maxChunkSize: 8192
 maxContentLength: 65536
+idleConnectionTimeout: 18000000
+keepAliveInterval: 5000
 maxAccumulationBufferComponents: 1024
 resultIterationBatchSize: 64
 writeBufferLowWaterMark: 32768
 writeBufferHighWaterMark: 65536
-#sssl: {
-#enabled: true}
+ssl: {
+  enabled: true, keyCertChainFile: /usr/lib/jvm/java-8-openjdk-amd64/server.crt, keyFile: /usr/lib/jvm/java-8-openjdk-amd64/server.pk8, trustCertChainFile: /usr/lib/jvm/java-8-openjdk-amd64/server-trusted.crt, keyPassword: catapult4password
+}
 authentication: {
-  authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
-  authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,
+  authenticator: org.apache.tinkerpop.gremlin.server.auth.SimpleAuthenticator,
   config: {
-       defaultUsername: admin,
-       defaultPassword: 1234,
-       hmacSecret: secret,
-       tokenTimeout: 7200000,
-       credentialsDb:  conf/janusgraph-credentials-server.properties
+    credentialsDb: conf/tinkergraph-credentials.properties   
   }
 }

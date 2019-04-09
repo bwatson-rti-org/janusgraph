@@ -39,24 +39,37 @@ metrics: {
   slf4jReporter: {enabled: true, interval: 180000},
   gangliaReporter: {enabled: false, interval: 180000, addressingMode: MULTICAST},
   graphiteReporter: {enabled: false, interval: 180000}}
+strictTransactionManagement: false
 maxInitialLineLength: 4096
 maxHeaderSize: 8192
 maxChunkSize: 8192
 maxContentLength: 65536
+idleConnectionTimeout: 18000000
+keepAliveInterval: 5000
 maxAccumulationBufferComponents: 1024
 resultIterationBatchSize: 64
 writeBufferLowWaterMark: 32768
 writeBufferHighWaterMark: 65536
-#sssl: {
-#enabled: true}
-authentication: {
-  authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
-  authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,
-  config: {
-       defaultUsername: admin,
-       defaultPassword: 1234,
-       hmacSecret: secret,
-       tokenTimeout: 7200000,
-       credentialsDb:  conf/janusgraph-credentials-server.properties
-  }
+ssl: {
+  enabled: true, keyCertChainFile: /usr/lib/jvm/java-8-openjdk-amd64/server.crt, keyFile: /usr/lib/jvm/java-8-openjdk-amd64/server.pk8, trustCertChainFile: /usr/lib/jvm/java-8-openjdk-amd64/server-trusted.crt, keyPassword: catapult4password
+#  sslEnabledProtocols: [TLSv1.2],
+#  keyStore: /usr/lib/jvm/java-8-openjdk-amd64/rti.org.jks,
+#  keyStorePassword: catapult4password
 }
+authentication: {
+  authenticator: org.apache.tinkerpop.gremlin.server.auth.SimpleAuthenticator,
+  config: {
+    credentialsDb: conf/janusgraph-server-credentials.properties
+    }
+}
+#authentication: {
+#  authenticator: org.janusgraph.graphdb.tinkerpop.gremlin.server.auth.SaslAndHMACAuthenticator,
+#  authenticationHandler: org.janusgraph.graphdb.tinkerpop.gremlin.server.handler.SaslAndHMACAuthenticationHandler,
+#  config: {
+#       defaultUsername: admin,
+#       defaultPassword: 1234,
+#       hmacSecret: secret,
+#       tokenTimeout: 7200000,
+#       credentialsDb:  conf/janusgraph-server-credentials.properties
+#  }
+#}
